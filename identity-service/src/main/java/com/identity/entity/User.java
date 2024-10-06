@@ -1,13 +1,7 @@
 package com.identity.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
@@ -16,10 +10,14 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Setter
 @Entity
+@Table(name = "users")
 public class User {
     @Id
-    @Column(name = "username", length = 50, nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
+    @Column(name = "username", length = 50, nullable = false, unique = true)
     String username;
     @Column(name = "password", length = 200, nullable = false)
     String password;
@@ -29,6 +27,8 @@ public class User {
     String address;
     @Column(name = "phone_number", length = 10, nullable = false)
     String phoneNumber;
+    @Column(name = "is_active", nullable = false)
+    boolean isActive;
     @ManyToMany
     Set<Role> roles;
 }

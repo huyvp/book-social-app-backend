@@ -2,7 +2,7 @@ package com.identity.handler;
 
 import com.identity.exception.ErrorCode;
 import com.identity.exception.ServiceException;
-import com.identity.response.DefaultResponse;
+import com.identity.dto.response.DefaultResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

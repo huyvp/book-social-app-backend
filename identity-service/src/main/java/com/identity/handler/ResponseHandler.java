@@ -1,18 +1,19 @@
 package com.identity.handler;
 
-import com.identity.response.DefaultResponse;
+import com.identity.dto.response.DefaultResponse;
+import com.identity.dto.response.UserResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class ResponseHandler {
-    public static ResponseEntity<Object> execute(Object result, int total) {
+    public static ResponseEntity<Object> execute(Object result, int... total) {
         DefaultResponse<Object> defaultResponse = DefaultResponse.builder()
                 .code(2000)
                 .message("success")
                 .status(HttpStatus.OK)
                 .result(result)
-                .total(total)
                 .build();
+        if (total.length != 0) defaultResponse.setTotal(total[0]);
         return ResponseEntity.ok(defaultResponse);
     }
 
