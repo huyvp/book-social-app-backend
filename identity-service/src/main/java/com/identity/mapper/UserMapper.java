@@ -4,6 +4,7 @@ import com.identity.dto.request.UserRequest;
 import com.identity.dto.response.UserResponse;
 import com.identity.entity.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

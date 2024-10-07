@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Builder
-@Setter
+@Data
 public class Role {
     @Id
     String name;
