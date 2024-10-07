@@ -3,6 +3,8 @@ package com.identity.service.impl;
 import com.identity.dto.request.PermissionRequest;
 import com.identity.dto.response.PermissionResponse;
 import com.identity.entity.Permission;
+import com.identity.exception.ErrorCode;
+import com.identity.exception.ServiceException;
 import com.identity.mapper.PermissionMapper;
 import com.identity.repo.PermissionRepo;
 import com.identity.service.IPermissionService;
@@ -24,18 +26,30 @@ public class PermissionService implements IPermissionService {
 
     @Override
     public PermissionResponse createPermission(PermissionRequest permissionRequest) {
+        if (permissionRepo.findById(permissionRequest.getName()).isPresent())
+            throw new ServiceException(ErrorCode.PERMISSION_3001);
         Permission permission = permissionMapper.toPermissionFromPermissionReq(permissionRequest);
         return permissionMapper.toPermissionResFromPermission(permissionRepo.save(permission));
     }
 
     @Override
     public void deletePermission(String permission) {
+        permissionRepo.findById(permission)
+                .orElseThrow(() -> new ServiceException(ErrorCode.PERMISSION_3002));
         permissionRepo.deleteById(permission);
+    }
+
+    @Override
+    public PermissionResponse getPermission(String permission) {
+        Permission permissionExisted = permissionRepo.findById(permission)
+                .orElseThrow(() -> new ServiceException(ErrorCode.PERMISSION_3002));
+        return permissionMapper.toPermissionResFromPermission(permissionExisted);
     }
 
     @Override
     public List<PermissionResponse> getAllPermission() {
         var permissions = permissionRepo.findAll();
-        return permissions.stream().map(permissionMapper::toPermissionResFromPermission).toList();
+        return permissions.stream()
+                .map(permissionMapper::toPermissionResFromPermission).toList();
     }
 }

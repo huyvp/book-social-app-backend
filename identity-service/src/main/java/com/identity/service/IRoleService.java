@@ -10,5 +10,7 @@ public interface IRoleService {
 
     void deleteRole(String role);
 
+    RoleResponse getRole(String role);
+
     List<RoleResponse> getAllRoles();
 }

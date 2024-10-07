@@ -1,4 +1,7 @@
 package com.identity.dto.response;
 
-public class RoleResponse {
+import java.util.Set;
+
+
+public record RoleResponse(String name, String description, Set<PermissionResponse> permissions) {
 }

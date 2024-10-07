@@ -33,8 +33,8 @@ public class UserService implements IUserService {
 
     @Override
     public UserResponse createUser(UserRequest userRequest) {
-        userRepo.findByUsername(userRequest.getUserName())
-                .orElseThrow(() -> new ServiceException(ErrorCode.USER_3001));
+        if (userRepo.findByUsername(userRequest.getUserName()).isPresent())
+            throw new ServiceException(ErrorCode.USER_3002);
 
         User user = userMapper.toUserFromUserReq(userRequest);
         user.setActive(true);

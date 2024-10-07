@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -17,6 +19,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     ResponseEntity<Object> handleRestException(Exception e) {
         DefaultResponse<Object> response = DefaultResponse.builder()
+                .timestamp(LocalDateTime.now())
                 .code(ErrorCode.UNCATEGORIZED.getCode())
                 .status(ErrorCode.UNCATEGORIZED.getHttpStatus())
                 .message(e.getMessage())
@@ -27,6 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     ResponseEntity<Object> handleServiceException(ServiceException e) {
         DefaultResponse<Object> response = DefaultResponse.builder()
+                .timestamp(LocalDateTime.now())
                 .code(e.getErrorCode().getCode())
                 .status(e.getErrorCode().getHttpStatus())
                 .message(e.getErrorCode().getMessage())

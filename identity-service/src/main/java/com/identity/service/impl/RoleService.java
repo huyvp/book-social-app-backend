@@ -4,6 +4,8 @@ import com.identity.dto.request.RoleRequest;
 import com.identity.dto.response.RoleResponse;
 import com.identity.entity.Permission;
 import com.identity.entity.Role;
+import com.identity.exception.ErrorCode;
+import com.identity.exception.ServiceException;
 import com.identity.mapper.RoleMapper;
 import com.identity.repo.PermissionRepo;
 import com.identity.repo.RoleRepo;
@@ -28,7 +30,9 @@ public class RoleService implements IRoleService {
 
     @Override
     public RoleResponse createRole(RoleRequest roleRequest) {
-        List<Permission> permissions = permissionRepo.findAllById(roleRequest.getPermissions());
+        List<Permission> permissions = permissionRepo.findAllById(
+                roleRequest.getPermissions()
+        );
         Role role = roleMapper.toRoleFormRoleReq(roleRequest);
         role.setPermissions(new HashSet<>(permissions));
         return roleMapper.toRoleResFromRole(roleRepo.save(role));
@@ -36,7 +40,16 @@ public class RoleService implements IRoleService {
 
     @Override
     public void deleteRole(String role) {
+        roleRepo.findById(role)
+                .orElseThrow(() -> new ServiceException(ErrorCode.ROLE_3002));
         roleRepo.deleteById(role);
+    }
+
+    @Override
+    public RoleResponse getRole(String role) {
+        Role roleExisted = roleRepo.findById(role)
+                .orElseThrow(() -> new ServiceException(ErrorCode.ROLE_3002));
+        return roleMapper.toRoleResFromRole(roleExisted);
     }
 
     @Override

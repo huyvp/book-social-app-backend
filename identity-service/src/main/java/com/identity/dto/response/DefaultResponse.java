@@ -7,17 +7,18 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
-@Setter
+import static com.identity.constant.Constants.Pattern.TIME;
+
+@Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DefaultResponse<T> {
-    @JsonFormat(pattern = "HH:mm:ss yyyy-MM-dd", timezone = "Asia/Bangkok")
+    @JsonFormat(pattern = TIME, timezone = "Asia/Bangkok")
     private LocalDateTime timestamp;
     private int code;
     private HttpStatus status;
     private String message;
-    private int total;
+    @Setter
+    private Integer total;
     private T result;
 }

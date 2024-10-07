@@ -24,16 +24,23 @@ public class RoleController {
         );
     }
 
+    @DeleteMapping("/{role}")
+    public ResponseEntity<Object> deleteRole(@PathVariable String role) {
+        roleService.deleteRole(role);
+        return ResponseHandler.execute();
+    }
+
+    @GetMapping("/{role}")
+    public ResponseEntity<Object> getRole(@PathVariable String role) {
+        return ResponseHandler.execute(
+                roleService.getRole(role)
+        );
+    }
+
     @GetMapping
     public ResponseEntity<Object> getAllRole() {
         return ResponseHandler.execute(
                 roleService.getAllRoles()
         );
-    }
-
-    @DeleteMapping("/{role}")
-    public ResponseEntity<Object> deleteRole(@PathVariable String role) {
-        roleService.deleteRole(role);
-        return ResponseHandler.execute();
     }
 }
