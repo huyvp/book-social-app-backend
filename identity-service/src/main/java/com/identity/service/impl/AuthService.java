@@ -37,6 +37,7 @@ public class AuthService implements IAuthService {
     UserRepo userRepo;
     PasswordEncoder passwordEncoder;
     InvalidatedTokenRepo invalidatedToken;
+    InvalidatedTokenRepo invalidatedTokenRepo;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -50,13 +51,14 @@ public class AuthService implements IAuthService {
 
     @Override
     public String login(UserLogin userLogin) {
-        String username = userLogin.getUserName();
+        String username = userLogin.getUsername();
         String password = userLogin.getPassword();
+
         if (username == null || password == null)
             throw new ServiceException(ErrorCode.AUTH_4002);
         User user = userRepo.findByUsernameAndActiveTrue(username)
                 .orElseThrow(() -> new ServiceException(ErrorCode.PERMISSION_3002));
-        if (!passwordEncoder.matches(user.getPassword(), password))
+        if (!passwordEncoder.matches(password, user.getPassword()))
             throw new ServiceException(ErrorCode.AUTH_4003);
 
         return generateToken(user);
@@ -64,17 +66,50 @@ public class AuthService implements IAuthService {
 
     @Override
     public void logout(String token) {
-
+        try {
+            SignedJWT signedToken = verifyToken(token, true);
+            String tokenId = signedToken.getJWTClaimsSet().getJWTID();
+            Date expiryTime = signedToken.getJWTClaimsSet().getExpirationTime();
+            InvalidatedToken invalidatedToken = InvalidatedToken.builder()
+                    .id(tokenId)
+                    .expiryTime(expiryTime)
+                    .build();
+            invalidatedTokenRepo.save(invalidatedToken);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public String refreshToken(String token) {
-        return "";
+        SignedJWT signedToken = verifyToken(token, true);
+        try {
+            String tokenId = signedToken.getJWTClaimsSet().getJWTID();
+            Date expiryTime = signedToken.getJWTClaimsSet().getExpirationTime();
+
+            InvalidatedToken invalidatedToken = InvalidatedToken.builder()
+                    .id(tokenId)
+                    .expiryTime(expiryTime)
+                    .build();
+            invalidatedTokenRepo.save(invalidatedToken);
+            String username = signedToken.getJWTClaimsSet().getSubject();
+
+            User user = userRepo.findByUsernameAndActiveTrue(username)
+                    .orElseThrow(() -> new ServiceException(ErrorCode.AUTH_4001));
+            return generateToken(user);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean introspect(String token) {
-        return false;
+        try {
+            verifyToken(token, false);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     private SignedJWT verifyToken(String token, boolean isRefresh) {
@@ -126,7 +161,9 @@ public class AuthService implements IAuthService {
             roles.forEach(role -> {
                 stringJoiner.add("ROLE_" + role.getName());
                 if (!role.getPermissions().isEmpty()) {
-                    role.getPermissions().forEach(permission -> stringJoiner.add(permission.getName()));
+                    role.getPermissions().forEach(
+                            permission -> stringJoiner.add(permission.getName())
+                    );
                 }
             });
         }

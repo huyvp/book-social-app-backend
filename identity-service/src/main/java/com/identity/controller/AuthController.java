@@ -25,16 +25,21 @@ public class AuthController {
 
     @PostMapping("/introspect")
     public ResponseEntity<Object> introspect(@RequestParam("token") String token) {
-        return ResponseHandler.execute();
+        return ResponseHandler.execute(
+                authService.introspect(token)
+        );
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<Object> refresh(@RequestParam("token") String token) {
-        return ResponseHandler.execute();
+        return ResponseHandler.execute(
+                authService.refreshToken(token)
+        );
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Object> logout(@RequestParam("token") String token) {
+        authService.logout(token);
         return ResponseHandler.execute();
     }
 }

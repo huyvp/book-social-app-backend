@@ -4,12 +4,8 @@ import com.identity.dto.request.UserRequest;
 import com.identity.dto.response.UserResponse;
 import com.identity.entity.Role;
 import com.identity.entity.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
-import java.lang.annotation.Target;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,5 +24,11 @@ public interface UserMapper {
         if (roles == null) return null;
         return roles.stream().map(Role::getName)
                 .collect(Collectors.toSet());
+    }
+
+    @AfterMapping
+    default void handleNullStrings(@MappingTarget UserResponse userResponse) {
+        if (userResponse.getAddress() == null) userResponse.setAddress("");
+        if (userResponse.getPhoneNumber() == null) userResponse.setPhoneNumber("");
     }
 }
