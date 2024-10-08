@@ -2,16 +2,25 @@ package com.identity.controller;
 
 import com.identity.dto.request.UserLogin;
 import com.identity.handler.ResponseHandler;
+import com.identity.service.IAuthService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthController {
+    IAuthService authService;
+
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody UserLogin userLogin) {
-        return ResponseHandler.execute();
+        return ResponseHandler.execute(
+                authService.login(userLogin)
+        );
     }
 
     @PostMapping("/introspect")

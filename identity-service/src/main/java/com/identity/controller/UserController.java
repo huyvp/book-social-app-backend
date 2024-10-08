@@ -29,10 +29,12 @@ public class UserController {
         );
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable int id,
-                                             @RequestBody UserUpdate userUpdate) {
-        return ResponseHandler.execute();
+    @PutMapping("{userId}")
+    public ResponseEntity<Object> updateUser(@PathVariable String userId,
+                                             @RequestBody UserRequest userRequest) {
+        return ResponseHandler.execute(
+                userService.updateUser(userId, userRequest)
+        );
     }
 
     @DeleteMapping("{id}")

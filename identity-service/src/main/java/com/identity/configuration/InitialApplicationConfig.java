@@ -4,56 +4,57 @@ import com.identity.entity.Role;
 import com.identity.entity.User;
 import com.identity.repo.RoleRepo;
 import com.identity.repo.UserRepo;
-import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import static com.identity.constant.Constants.PreDefineRole.ROLE_ADMIN;
-import static com.identity.constant.Constants.PreDefineRole.ROLE_USER;
 
 import java.util.HashSet;
 
-@Configuration
+import static com.identity.constant.Constants.PreDefineRole.ROLE_ADMIN;
+import static com.identity.constant.Constants.PreDefineRole.ROLE_USER;
+import static com.identity.constant.Constants.ADMIN_ACCOUNT.ADMIN_PASSWORD;
+import static com.identity.constant.Constants.ADMIN_ACCOUNT.ADMIN_USERNAME;
+
 @Slf4j
+@Configuration
 public class InitialApplicationConfig {
-    PasswordEncoder passwordEncoder;
-
-    @NonFinal
-    static final String ADMIN_USER_NAME = "admin";
-
-    @NonFinal
-    static final String ADMIN_PASSWORD = "admin";
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10);
+    }
 
     @Bean
-    @ConditionalOnProperty(
-            prefix = "spring",
-            value = "datasource.driverClassName",
+    @ConditionalOnProperty(prefix = "spring",
+            value = "datasource.driver-class-name",
             havingValue = "org.postgresql.Driver"
     )
     ApplicationRunner applicationRunner(UserRepo userRepo, RoleRepo roleRepo) {
         log.info("Initializing application with custom configuration.....");
         return args -> {
-            if (userRepo.findByUsername(ADMIN_USER_NAME).isEmpty()) {
+            if (userRepo.findByUsernameAndActiveTrue(ADMIN_USERNAME).isEmpty()) {
+
                 roleRepo.save(Role.builder()
                         .name(ROLE_USER)
-                        .description("User role")
+                        .description("Default user role")
                         .build());
 
                 Role adminRole = roleRepo.save(Role.builder()
                         .name(ROLE_ADMIN)
-                        .description("Admin role")
+                        .description("Default admin role")
                         .build());
 
                 var roles = new HashSet<Role>();
                 roles.add(adminRole);
 
                 User user = User.builder()
-                        .username(ADMIN_USER_NAME)
-                        .password(passwordEncoder.encode(ADMIN_PASSWORD))
+                        .username(ADMIN_USERNAME)
+                        .password(passwordEncoder().encode(ADMIN_PASSWORD))
+                        .email("admin@admin.com")
+                        .active(true)
                         .roles(roles)
                         .build();
 

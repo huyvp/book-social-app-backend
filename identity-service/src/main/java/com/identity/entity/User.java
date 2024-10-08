@@ -10,8 +10,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Setter
 @Entity
+@Data
 @Table(name = "users")
 public class User {
     @Id
@@ -25,10 +25,10 @@ public class User {
     String email;
     @Column(name = "address", length = 200)
     String address;
-    @Column(name = "phone_number", length = 10, nullable = false)
+    @Column(name = "phone_number", length = 10)
     String phoneNumber;
-    @Column(name = "is_active", nullable = false)
-    boolean isActive;
+    @Column(name = "active", nullable = false)
+    boolean active;
     @ManyToMany
     Set<Role> roles;
 }

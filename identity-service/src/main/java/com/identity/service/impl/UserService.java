@@ -13,6 +13,7 @@ import com.identity.service.IUserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import static com.identity.constant.Constants.PreDefineRole.ROLE_USER;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserService implements IUserService {
     UserRepo userRepo;
     UserMapper userMapper;
@@ -33,8 +35,8 @@ public class UserService implements IUserService {
 
     @Override
     public UserResponse createUser(UserRequest userRequest) {
-        if (userRepo.findByUsername(userRequest.getUserName()).isPresent())
-            throw new ServiceException(ErrorCode.USER_3002);
+        if (userRepo.findByUsernameAndActiveTrue(userRequest.getUsername()).isPresent())
+            throw new ServiceException(ErrorCode.USER_3001);
 
         User user = userMapper.toUserFromUserReq(userRequest);
         user.setActive(true);
@@ -48,13 +50,19 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserResponse updateUser(String id, UserRequest userRequest) {
-        return null;
+    public UserResponse updateUser(String userId, UserRequest userRequest) {
+        User user = userRepo.findByIdAndActiveTrue(userId)
+                .orElseThrow(() -> new ServiceException(ErrorCode.USER_3002));
+
+        userMapper.updateUser(user, userRequest);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return userMapper.toUserResFromUser(userRepo.save(user));
     }
 
     @Override
     public void deleteUser(String id) {
-        User user = userRepo.findById(id)
+        User user = userRepo.findByIdAndActiveTrue(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.USER_3002));
         user.setActive(false);
         userRepo.save(user);
@@ -62,14 +70,14 @@ public class UserService implements IUserService {
 
     @Override
     public List<UserResponse> getAllUsers(PageRequest pageRequest) {
-        return userRepo.findAllByIsActiveTrue(pageRequest).stream()
+        return userRepo.findAllByActiveTrue(pageRequest).stream()
                 .map(userMapper::toUserResFromUser).toList();
     }
 
     @Override
     public UserResponse getUserById(String id) {
         return userMapper.toUserResFromUser(
-                userRepo.findById(id)
+                userRepo.findByIdAndActiveTrue(id)
                         .orElseThrow(() -> new ServiceException(ErrorCode.USER_3002))
         );
     }

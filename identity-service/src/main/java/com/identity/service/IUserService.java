@@ -9,7 +9,7 @@ import java.util.List;
 public interface IUserService {
     UserResponse createUser(UserRequest userRequest);
 
-    UserResponse updateUser(String id, UserRequest userRequest);
+    UserResponse updateUser(String userId, UserRequest userRequest);
 
     void deleteUser(String id);
 
