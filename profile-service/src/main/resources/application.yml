@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: profile-service
+server:
+  port: 9091
+  servlet:
+    context-path: /profile/api/v1/
