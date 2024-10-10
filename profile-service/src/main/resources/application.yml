@@ -1,6 +1,12 @@
 spring:
   application:
     name: profile-service
+  neo4j:
+      uri: neo4j://localhost:7687
+      authentication:
+        username: neo4j
+        password: neo4j123456
+
 server:
   port: 9091
   servlet:
