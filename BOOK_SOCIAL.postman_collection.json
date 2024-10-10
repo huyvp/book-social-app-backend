@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "eab84342-b94e-4e98-bb70-29470c5fc61d",
+		"_postman_id": "9d874b45-53de-4533-816c-73f5e0968603",
 		"name": "BOOK_SOCIAL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "24418910"
@@ -22,14 +22,14 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"fullname\": \"UserTest2\",\r\n    \"phone_number\": \"01234576\",\r\n    \"address\": \"Address for test\",\r\n    \"password\": \"pass\",\r\n    \"date_of_birth\": \"2000-09-18\",\r\n    \"facebook_account_id\": 0,\r\n    \"google_account_id\": 0\r\n}",
+									"raw": "{\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"address of test user\",\r\n    \"email\": \"nvh1892k@gmail.com\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{URL.PREFIX}}/users"
+								"url": "{{URL.IDENTITY}}/users"
 							},
 							"response": []
 						},
@@ -40,14 +40,14 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"fullname\": \"user update\",\r\n    \"phone_number\": \"01234567\",\r\n    \"address\": \"address for test\",\r\n    \"date_of_birth\": \"2000-09-19\",\r\n    \"facebook_account_id\": 0,\r\n    \"google_account_id\": 0,\r\n    \"roles\": [\r\n        \"STAFF\"\r\n    ]\r\n}",
+									"raw": "{\r\n    \"username\": \"John witch\",\r\n    \"password\": \"pass\",\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"address of test user\",\r\n    \"email\": \"nvh1892k@gmail.com\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{URL.IDENTITY}}/users/3"
+								"url": "{{URL.IDENTITY}}/users/a0f325dc-4570-475a-8012-93ce77bbf914"
 							},
 							"response": []
 						},
@@ -57,9 +57,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{URL.PREFIX}}/users?page=0&limit=5",
+									"raw": "{{URL.IDENTITY}}/users?page=0&limit=5",
 									"host": [
-										"{{URL.PREFIX}}"
+										"{{URL.IDENTITY}}"
 									],
 									"path": [
 										"users"
@@ -83,7 +83,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{URL.PREFIX}}/users/2"
+								"url": "{{URL.IDENTITY}}/users/a0f325dc-4570-475a-8012-93ce77bbf914"
 							},
 							"response": []
 						},
@@ -99,7 +99,7 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{URL.PREFIX}}/users/myInfo"
+								"url": "{{URL.IDENTITY}}/users/myInfo"
 							},
 							"response": []
 						},
@@ -108,7 +108,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{URL.PREFIX}}/users/2"
+								"url": "{{URL.IDENTITY}}/users/72e5cbff-8681-4c76-a676-66405b543b86"
 							},
 							"response": []
 						}
@@ -124,7 +124,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"USER\",\r\n    \"description\": \"Staff role\",\r\n    \"permissions\": [\r\n        \"MODIFY_DATA\",\r\n        \"CREATE_DATA\"\r\n    ]\r\n}",
+									"raw": "{\r\n    \"name\": \"USER\",\r\n    \"description\": \"Admin role\",\r\n    \"permissions\": [\r\n        \"DELETE_DATA\",\r\n        \"WRITE_DATA\",\r\n        \"CREATE_DATA\"\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -186,7 +186,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"DELETE_DATA\",\r\n    \"description\": \"Staff can modify data\"\r\n}",
+									"raw": "{\r\n    \"name\": \"WRITE_DATA\",\r\n    \"description\": \"Staff can modify data\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -241,8 +241,7 @@
 											"    pm.collectionVariables.set(\"token\", token.result);\r",
 											"});"
 										],
-										"type": "text/javascript",
-										"packages": {}
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -254,14 +253,14 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"phone_number\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+									"raw": "{\r\n    \"username\": \"John snow\",\r\n    \"password\": \"pass\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{URL.PREFIX}}/auth/login"
+								"url": "{{URL.IDENTITY}}/auth/login"
 							},
 							"response": []
 						},
@@ -294,7 +293,7 @@
 										}
 									]
 								},
-								"url": "{{URL.PREFIX}}/auth/logout"
+								"url": "{{URL.IDENTITY}}/auth/logout"
 							},
 							"response": []
 						},
@@ -330,7 +329,7 @@
 										}
 									]
 								},
-								"url": "{{URL.PREFIX}}/auth/refresh"
+								"url": "{{URL.IDENTITY}}/auth/refresh"
 							},
 							"response": []
 						},
@@ -352,7 +351,47 @@
 										}
 									]
 								},
-								"url": "{{URL.PREFIX}}/auth/introspect"
+								"url": "{{URL.IDENTITY}}/auth/introspect"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "api/v1/users",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"address of test user\",\r\n    \"email\": \"nvh1892k@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{URL.PROFILE}}/users"
+							},
+							"response": []
+						},
+						{
+							"name": "api/v1/users/{id}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{URL.IDENTITY}}/users/a0f325dc-4570-475a-8012-93ce77bbf914"
 							},
 							"response": []
 						}
@@ -366,7 +405,6 @@
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
@@ -376,7 +414,6 @@
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
@@ -386,8 +423,17 @@
 	"variable": [
 		{
 			"key": "URL.IDENTITY",
+			"value": "http://localhost:9090/identity/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "URL.PROFILE",
 			"value": "",
 			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
 		}
 	]
 }

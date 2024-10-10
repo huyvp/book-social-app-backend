@@ -9,13 +9,13 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping(value = "/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserProfileController {
     IUserProfileService userProfileService;
 
-    @PostMapping("/")
+    @PostMapping
     UserProfileResponse createUserProfile(@RequestBody UserProfileRequest userProfileRequest) {
         return userProfileService.createProfile(userProfileRequest);
     }
