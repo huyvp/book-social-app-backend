@@ -10,7 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleRequest {
+public class RoleReq {
     String name;
     String description;
     Set<String> permissions;

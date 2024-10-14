@@ -1,6 +1,6 @@
 package com.identity.service.impl;
 
-import com.identity.dto.request.RoleRequest;
+import com.identity.dto.request.RoleReq;
 import com.identity.dto.response.RoleResponse;
 import com.identity.entity.Permission;
 import com.identity.entity.Role;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -30,11 +29,11 @@ public class RoleService implements IRoleService {
     PermissionRepo permissionRepo;
 
     @Override
-    public RoleResponse createRole(RoleRequest roleRequest) {
+    public RoleResponse createRole(RoleReq roleReq) {
         List<Permission> permissions = permissionRepo.findAllById(
-                roleRequest.getPermissions()
+                roleReq.getPermissions()
         );
-        Role role = roleMapper.toRoleFormRoleReq(roleRequest);
+        Role role = roleMapper.toRoleFormRoleReq(roleReq);
         role.setPermissions(new HashSet<>(permissions));
         return roleMapper.toRoleResFromRole(roleRepo.save(role));
     }

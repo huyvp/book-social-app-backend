@@ -19,3 +19,7 @@ jwt:
   signerKey: SpringBootTrainingsdfhsdfgsr4gsfgsregsfgsfdg#$%S%G
   valid-duration: 3600
   refreshable-duration: 120
+
+application:
+  service:
+    profile: http://localhost:9091/profile/api/v1

@@ -1,6 +1,6 @@
 package com.identity.controller;
 
-import com.identity.dto.request.PermissionRequest;
+import com.identity.dto.request.PermissionReq;
 import com.identity.handler.ResponseHandler;
 import com.identity.service.IPermissionService;
 import lombok.AccessLevel;
@@ -17,9 +17,9 @@ public class PermissionController {
     IPermissionService permissionService;
 
     @PostMapping
-    public ResponseEntity<Object> createPermission(@RequestBody PermissionRequest permissionRequest) {
+    public ResponseEntity<Object> createPermission(@RequestBody PermissionReq permissionReq) {
         return ResponseHandler.execute(
-                permissionService.createPermission(permissionRequest)
+                permissionService.createPermission(permissionReq)
         );
     }
 

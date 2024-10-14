@@ -1,6 +1,6 @@
 package com.profile.service.impl;
 
-import com.profile.dto.request.UserProfileRequest;
+import com.profile.dto.request.UserProfileReq;
 import com.profile.dto.response.UserProfileResponse;
 import com.profile.entity.UserProfile;
 import com.profile.mapper.UserProfileMapper;
@@ -20,7 +20,7 @@ public class UserProfileService implements IUserProfileService {
     UserProfileRepo userProfileRepo;
     UserProfileMapper userProfileMapper;
 
-    public UserProfileResponse createProfile(UserProfileRequest request) {
+    public UserProfileResponse createProfile(UserProfileReq request) {
         UserProfile userProfile = userProfileMapper.toUserProfile(request);
         userProfile = userProfileRepo.save(userProfile);
         return userProfileMapper.toUserProfileRes(userProfile);

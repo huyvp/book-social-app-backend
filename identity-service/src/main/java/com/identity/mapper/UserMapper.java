@@ -1,6 +1,6 @@
 package com.identity.mapper;
 
-import com.identity.dto.request.UserRequest;
+import com.identity.dto.request.UserReq;
 import com.identity.dto.response.UserResponse;
 import com.identity.entity.Role;
 import com.identity.entity.User;
@@ -11,13 +11,13 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    User toUserFromUserReq(UserRequest userRequest);
+    User toUserFromUserReq(UserReq userReq);
 
     @Mapping(source = "roles", target = "roles", qualifiedByName = "mapRoleToString")
     UserResponse toUserResFromUser(User user);
 
     @Mapping(target = "roles", ignore = true)
-    void updateUser(@MappingTarget User user, UserRequest userRequest);
+    void updateUser(@MappingTarget User user, UserReq userReq);
 
     @Named("mapRoleToString")
     default Set<String> mapRoleToString(Set<Role> roles) {

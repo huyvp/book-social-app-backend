@@ -1,11 +1,14 @@
 package com.identity.service.impl;
 
-import com.identity.dto.request.UserRequest;
+import com.identity.client.ProfileClient;
+import com.identity.dto.request.ProfileReq;
+import com.identity.dto.request.UserReq;
 import com.identity.dto.response.UserResponse;
 import com.identity.entity.Role;
 import com.identity.entity.User;
 import com.identity.exception.ErrorCode;
 import com.identity.exception.ServiceException;
+import com.identity.mapper.ProfileMapper;
 import com.identity.mapper.UserMapper;
 import com.identity.repo.RoleRepo;
 import com.identity.repo.UserRepo;
@@ -15,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,29 +37,35 @@ public class UserService implements IUserService {
     UserMapper userMapper;
     RoleRepo roleRepo;
     PasswordEncoder passwordEncoder;
+    ProfileClient profileClient;
+    ProfileMapper profileMapper;
 
     @Override
-    public UserResponse createUser(UserRequest userRequest) {
-        if (userRepo.findByUsernameAndActiveTrue(userRequest.getUsername()).isPresent())
+    public UserResponse createUser(UserReq userReq) {
+        if (userRepo.findByUsernameAndActiveTrue(userReq.getUsername()).isPresent())
             throw new ServiceException(ErrorCode.USER_3001);
 
-        User user = userMapper.toUserFromUserReq(userRequest);
+        User user = userMapper.toUserFromUserReq(userReq);
         user.setActive(true);
-        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setPassword(passwordEncoder.encode(userReq.getPassword()));
         HashSet<Role> roles = new HashSet<>();
         roleRepo.findById(ROLE_USER).ifPresent(roles::add);
         user.setRoles(roles);
 
         User savedUser = userRepo.save(user);
+        ProfileReq profileReq = profileMapper.toProfileReq(userReq);
+        profileReq.setUserId(savedUser.getId());
+        profileClient.createProfile(profileReq);
+
         return userMapper.toUserResFromUser(savedUser);
     }
 
     @Override
-    public UserResponse updateUser(String userId, UserRequest userRequest) {
+    public UserResponse updateUser(String userId, UserReq userReq) {
         User user = userRepo.findByIdAndActiveTrue(userId)
                 .orElseThrow(() -> new ServiceException(ErrorCode.USER_3002));
 
-        userMapper.updateUser(user, userRequest);
+        userMapper.updateUser(user, userReq);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userMapper.toUserResFromUser(userRepo.save(user));
@@ -84,6 +95,11 @@ public class UserService implements IUserService {
 
     @Override
     public UserResponse getMyInfo() {
-        return null;
+        SecurityContext context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getPrincipal().toString();
+
+        User user = userRepo.findByUsernameAndActiveTrue(username)
+                .orElseThrow(() -> new ServiceException(ErrorCode.USER_3001));
+        return userMapper.toUserResFromUser(user);
     }
 }

@@ -1,7 +1,6 @@
 package com.identity.controller;
 
-import com.identity.dto.request.UserRequest;
-import com.identity.dto.request.UserUpdate;
+import com.identity.dto.request.UserReq;
 import com.identity.dto.response.UserResponse;
 import com.identity.handler.ResponseHandler;
 import com.identity.service.IUserService;
@@ -23,17 +22,17 @@ public class UserController {
     IUserService userService;
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<Object> createUser(@RequestBody UserReq userReq) {
         return ResponseHandler.execute(
-                userService.createUser(userRequest)
+                userService.createUser(userReq)
         );
     }
 
     @PutMapping("{userId}")
     public ResponseEntity<Object> updateUser(@PathVariable String userId,
-                                             @RequestBody UserRequest userRequest) {
+                                             @RequestBody UserReq userReq) {
         return ResponseHandler.execute(
-                userService.updateUser(userId, userRequest)
+                userService.updateUser(userId, userReq)
         );
     }
 
@@ -61,6 +60,8 @@ public class UserController {
 
     @GetMapping("/myInfo")
     public ResponseEntity<Object> getMyInfo() {
-        return ResponseHandler.execute();
+        return ResponseHandler.execute(
+                userService.getMyInfo()
+        );
     }
 }

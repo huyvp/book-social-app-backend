@@ -7,7 +7,8 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserProfileRequest {
+public class UserProfileReq {
+    String userId;
     String email;
     String phoneNumber;
     String address;

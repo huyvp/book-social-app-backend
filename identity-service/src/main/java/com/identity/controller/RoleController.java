@@ -1,6 +1,6 @@
 package com.identity.controller;
 
-import com.identity.dto.request.RoleRequest;
+import com.identity.dto.request.RoleReq;
 import com.identity.handler.ResponseHandler;
 import com.identity.service.IRoleService;
 import lombok.AccessLevel;
@@ -19,9 +19,9 @@ public class RoleController {
     IRoleService roleService;
 
     @PostMapping
-    public ResponseEntity<Object> createRole(@RequestBody RoleRequest roleRequest) {
+    public ResponseEntity<Object> createRole(@RequestBody RoleReq roleReq) {
         return ResponseHandler.execute(
-                roleService.createRole(roleRequest)
+                roleService.createRole(roleReq)
         );
     }
 

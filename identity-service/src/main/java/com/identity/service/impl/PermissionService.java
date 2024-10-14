@@ -1,6 +1,6 @@
 package com.identity.service.impl;
 
-import com.identity.dto.request.PermissionRequest;
+import com.identity.dto.request.PermissionReq;
 import com.identity.dto.response.PermissionResponse;
 import com.identity.entity.Permission;
 import com.identity.exception.ErrorCode;
@@ -25,10 +25,10 @@ public class PermissionService implements IPermissionService {
     PermissionMapper permissionMapper;
 
     @Override
-    public PermissionResponse createPermission(PermissionRequest permissionRequest) {
-        if (permissionRepo.findById(permissionRequest.getName()).isPresent())
+    public PermissionResponse createPermission(PermissionReq permissionReq) {
+        if (permissionRepo.findById(permissionReq.getName()).isPresent())
             throw new ServiceException(ErrorCode.PERMISSION_3001);
-        Permission permission = permissionMapper.toPermissionFromPermissionReq(permissionRequest);
+        Permission permission = permissionMapper.toPermissionFromPermissionReq(permissionReq);
         return permissionMapper.toPermissionResFromPermission(permissionRepo.save(permission));
     }
 

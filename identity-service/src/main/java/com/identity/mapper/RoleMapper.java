@@ -1,6 +1,6 @@
 package com.identity.mapper;
 
-import com.identity.dto.request.RoleRequest;
+import com.identity.dto.request.RoleReq;
 import com.identity.dto.response.RoleResponse;
 import com.identity.entity.Permission;
 import com.identity.entity.Role;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
     @Mapping(target = "permissions", ignore = true)
-    Role toRoleFormRoleReq(RoleRequest roleRequest);
+    Role toRoleFormRoleReq(RoleReq roleReq);
 
     @Mapping(target = "permissions", source = "permissions", qualifiedByName = "mapPermissionsToStrings")
     RoleResponse toRoleResFromRole(Role role);
