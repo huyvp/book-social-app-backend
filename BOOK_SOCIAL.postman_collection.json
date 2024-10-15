@@ -22,7 +22,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"address of test user\",\r\n    \"email\": \"nvh1892k@gmail.com\"\r\n}",
+									"raw": "{\r\n    \"username\": \"Johnathan tah\",\r\n    \"password\": \"password\",\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"New address of test user\",\r\n    \"email\": \"nvh1892k@gmail.com\",\r\n    \"city\": \"Hanoi\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -375,7 +375,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"address of test user\",\r\n    \"email\": \"nvh1892k@gmail.com\"\r\n}",
+									"raw": "{\r\n    \"phoneNumber\": \"01234567889\",\r\n    \"address\": \"address of test user\",\r\n    \"email\": \"nvh1892kw@gmail.com\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -391,7 +391,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{URL.IDENTITY}}/users/a0f325dc-4570-475a-8012-93ce77bbf914"
+								"url": "{{URL.PROFILE}}/users/546cfaa7-dd8e-437b-adfb-0215fc57d403"
 							},
 							"response": []
 						}
@@ -423,12 +423,24 @@
 	"variable": [
 		{
 			"key": "URL.IDENTITY",
-			"value": "http://localhost:9090/identity/api/v1",
+			"value": "default",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "URL.IDENTITY",
+			"value": "gateway",
 			"type": "string"
 		},
 		{
 			"key": "URL.PROFILE",
 			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "URL.PROFILE",
+			"value": "gateway",
 			"type": "string"
 		},
 		{
