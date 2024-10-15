@@ -12,6 +12,7 @@
 
     <groupId>com.indentity.service</groupId>
     <artifactId>identity-service</artifactId>
+    <name>identity-service</name>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
