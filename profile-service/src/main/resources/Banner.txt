@@ -1,0 +1,9 @@
+${Ansi.GREEN}=======================================
+${Ansi.GREEN}   Power by Spring Boot
+${Ansi.GREEN}   Project: Profile service
+${Ansi.GREEN}   Author: huyvp
+${Ansi.GREEN}   GitHub repo:
+${Ansi.GREEN}   Start Date: 09/2024
+${Ansi.GREEN}   Tech Stack: Spring boot, neo4j
+${Ansi.GREEN}=======================================
+${Ansi.GREEN} :: Spring Boot${spring-boot.formatted-version} :: ${Ansi.DEFAULT}

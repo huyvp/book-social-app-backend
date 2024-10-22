@@ -1,0 +1,9 @@
+${Ansi.GREEN}=======================================
+${Ansi.GREEN}   Power by Spring Boot
+${Ansi.GREEN}   Project: Api gateway
+${Ansi.GREEN}   Author: huyvp
+${Ansi.GREEN}   GitHub repo:
+${Ansi.GREEN}   Start Date: 10/2024
+${Ansi.GREEN}   Tech Stack: Spring cloud gateway
+${Ansi.GREEN}=======================================
+${Ansi.GREEN} :: Spring Boot${spring-boot.formatted-version} :: ${Ansi.DEFAULT}

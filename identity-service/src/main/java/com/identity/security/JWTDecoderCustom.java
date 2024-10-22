@@ -33,8 +33,8 @@ public class JWTDecoderCustom implements JwtDecoder {
 
     @Override
     public Jwt decode(String token) throws JwtException {
-        if (authService.introspect(token))
-            throw new ServiceException(ErrorCode.AUTH_4004);
+        if (!authService.introspect(token))
+            throw new JwtException("Invalid JWT token");
         if (Objects.isNull(nimbusJwtDecoder)) {
             SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), MacAlgorithm.HS256.getName());
             nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec)

@@ -49,7 +49,7 @@ public class UserController {
         );
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Object> getAllUser(@RequestParam("page") int page,
                                              @RequestParam("limit") int limit) {
         List<UserResponse> users = userService.getAllUsers(
