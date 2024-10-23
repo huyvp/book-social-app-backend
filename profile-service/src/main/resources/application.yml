@@ -8,6 +8,6 @@ spring:
         password: neo4j123456
 
 server:
-  port: 9091
+  port: 9002
   servlet:
     context-path: /profile/

@@ -95,11 +95,11 @@ public class UserService implements IUserService {
 
     @Override
     public UserResponse getMyInfo() {
-        SecurityContext context = SecurityContextHolder.getContext();
-        String username = context.getAuthentication().getPrincipal().toString();
+        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = userRepo.findByUsernameAndActiveTrue(username)
-                .orElseThrow(() -> new ServiceException(ErrorCode.USER_3001));
+                .orElseThrow(() -> new ServiceException(ErrorCode.USER_3002));
         return userMapper.toUserResFromUser(user);
     }
 }

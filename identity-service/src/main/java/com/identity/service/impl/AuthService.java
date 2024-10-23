@@ -57,7 +57,7 @@ public class AuthService implements IAuthService {
         if (username == null || password == null)
             throw new ServiceException(ErrorCode.AUTH_4002);
         User user = userRepo.findByUsernameAndActiveTrue(username)
-                .orElseThrow(() -> new ServiceException(ErrorCode.PERMISSION_3002));
+                .orElseThrow(() -> new ServiceException(ErrorCode.AUTH_4003));
         if (!passwordEncoder.matches(password, user.getPassword()))
             throw new ServiceException(ErrorCode.AUTH_4003);
 
@@ -104,11 +104,7 @@ public class AuthService implements IAuthService {
 
     @Override
     public boolean introspect(String token) {
-        try {
-            verifyToken(token, false);
-        } catch (Exception e) {
-            return false;
-        }
+        verifyToken(token, false);
         return true;
     }
 
@@ -124,9 +120,9 @@ public class AuthService implements IAuthService {
             verified = signedJWT.verify(verifier);
 
             if (!verified && expireTime.after(new Date()))
-                throw new ServiceException(ErrorCode.AUTH_4001);
+                throw new ServiceException(ErrorCode.AUTH_4004);
             if (invalidatedToken.existsById(signedJWT.getJWTClaimsSet().getJWTID()))
-                throw new ServiceException(ErrorCode.AUTH_4001);
+                throw new ServiceException(ErrorCode.AUTH_4004);
             return signedJWT;
         } catch (JOSEException | ParseException e) {
             throw new RuntimeException(e);
@@ -136,7 +132,7 @@ public class AuthService implements IAuthService {
     public String generateToken(User user) {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getPhoneNumber())
+                .subject(user.getUsername())
                 .issuer("nvh189")
                 .issueTime(new Date())
                 .claim("scope", scopeBuilder(user.getRoles()))

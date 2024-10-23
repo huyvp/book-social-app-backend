@@ -1,7 +1,5 @@
 package com.identity.security;
 
-import com.identity.exception.ErrorCode;
-import com.identity.exception.ServiceException;
 import com.identity.service.IAuthService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +19,7 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class JWTDecoderCustom implements JwtDecoder {
+public class JwtDecoderCustom implements JwtDecoder {
     IAuthService authService;
 
     @NonFinal
@@ -32,9 +30,9 @@ public class JWTDecoderCustom implements JwtDecoder {
 
 
     @Override
-    public Jwt decode(String token) throws JwtException {
-        if (!authService.introspect(token))
-            throw new JwtException("Invalid JWT token");
+    public Jwt decode(String token) {
+        authService.introspect(token);
+
         if (Objects.isNull(nimbusJwtDecoder)) {
             SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), MacAlgorithm.HS256.getName());
             nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec)

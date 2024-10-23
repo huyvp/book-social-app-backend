@@ -14,8 +14,8 @@ public enum ErrorCode {
     // Related to AUTH
     // ----------------------------------
     AUTH_4000(4000, HttpStatus.FORBIDDEN, "Forbidden"),
-    AUTH_4001(4001, HttpStatus.UNAUTHORIZED, "Access Denied"),
-    AUTH_4002(4002, HttpStatus.UNAUTHORIZED, "username or password is not correct"),
+    AUTH_4001(4001, HttpStatus.BAD_REQUEST, "Access Denied"),
+    AUTH_4002(4002, HttpStatus.UNAUTHORIZED, "username or password is require"),
     AUTH_4003(4003, HttpStatus.UNAUTHORIZED, "Bad Credentials"),
     AUTH_4004(4004, HttpStatus.UNAUTHORIZED, "Invalid token"),
     // ----------------------------------
@@ -56,8 +56,7 @@ public enum ErrorCode {
     VALID_1011(1011, HttpStatus.BAD_REQUEST, "Number of product must be greater than 1"),
     VALID_1012(1012, HttpStatus.BAD_REQUEST, "Shipping date must be at least today"),
     VALID_1013(1013, HttpStatus.BAD_REQUEST, "Shipping address is require"),
-    VALID_1014(1014, HttpStatus.BAD_REQUEST, "Age must be at least {min}")
-    ;
+    VALID_1014(1014, HttpStatus.BAD_REQUEST, "Age must be at least {min}");
 
     private int code;
     private HttpStatus httpStatus;

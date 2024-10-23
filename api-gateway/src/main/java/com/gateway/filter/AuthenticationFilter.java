@@ -1,4 +1,4 @@
-package com.gateway.config;
+package com.gateway.filter;
 
 import com.gateway.service.IdentityService;
 import lombok.AccessLevel;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -27,16 +26,24 @@ public class AuthenticationFilter implements Ordered, GlobalFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info("Authentication filter request");
-//        List<String> authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
-//        if (CollectionUtils.isEmpty(authHeader))
-//            return unAuthentication(exchange.getResponse());
-//        String token = authHeader.get(0);
-//
-//        log.info("Token authorization: {}", token);
-//        identityService.introspect(token).subscribe(
-//                res -> log.info("Result: {}", res.getResult())
-//        );
+        String requestId = exchange.getRequest().getId();
+        log.info("[{}] Start authentication filter request", requestId);
+        String path = exchange.getRequest().getPath().toString();
+        String method = exchange.getRequest().getMethod().toString();
+        List<String> authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
+
+        log.info("[{}] Method: {} - Path: {}", requestId, method, path);
+        log.info("[{}] Headers: {}", requestId, authHeader);
+
+        /*if (CollectionUtils.isEmpty(authHeader))
+            return unAuthentication(exchange.getResponse());
+        String token = authHeader.get(0);
+        log.info("Token authorization: {}", token);
+        identityService.introspect(token).subscribe(
+                res -> log.info("Result: {}", res.getResult())
+        );*/
+
+        log.info("[{}] End authentication filter request \n", requestId);
         return chain.filter(exchange);
     }
 
